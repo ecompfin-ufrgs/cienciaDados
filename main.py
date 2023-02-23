@@ -18,16 +18,16 @@ def pipe():
 
 '''
     if ticker == stock:
-        price_return = stock_module.calculate_stock_return(data_price_series)
-        price_cumulative_return = stock_module.calculate_cumulative_stock_return(data_price_series)
+        get_stock_return = stock_module.calculate_stock_return(data_price_series)
+        get_stock_cumreturn = stock_module.calculate_cumulative_stock_return(data_price_series)
 
     elif ticker == option:
-        price_return = options_module.calculate_options_return(data_price_series)
-        price_cumulative_return = options_module.calculate_cumulative_options_return(data_price_series)
+        get_options_return = options_module.calculate_options_return(data_price_series)
+        get_options_cumreturn = options_module.calculate_cumulative_options_return(data_price_series)
 
     elif ticker == derivative:
-        price_return = derivative_module.calculate_derivative_return(data_price_series)
-        price_cumulative_return = derivative_module.calculate_cumulative_derivative_return(data_price_series)
+        get_derivative_return = derivative_module.calculate_derivative_return(data_price_series)
+        get_derivative_cumreturn = derivative_module.calculate_cumulative_derivative_return(data_price_series)
 '''
 
     view.post_info(data)
