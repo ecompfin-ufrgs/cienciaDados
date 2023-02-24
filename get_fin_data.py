@@ -1,5 +1,11 @@
 #Gustavo Pery
 # function to download financial information about a given asset
+"""
+ATENÇÃO:
+Por enquanto a função só consegue buscar por ações e fundos imobiliários listados no site do yahoo finance (que são quase todos, se não todos)!
+Ainda estou vendo como pegar informações sobre derivativos.
+
+"""
 
 import yfinance as yf
 import pandas as pd
