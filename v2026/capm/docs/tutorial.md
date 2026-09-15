@@ -1,3 +1,4 @@
 # Tutorial
 
-Demonstrar as principais funcionalidades
+Demonstrar as principais funcionalidades;
+Nossa principal funcionalidade é o cálculo do beta.
