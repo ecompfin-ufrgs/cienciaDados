@@ -2,5 +2,5 @@
 
 Equipe: 
 - Nelson
-- Luis Felipe
+- Luís Felipe
 - Fernando
