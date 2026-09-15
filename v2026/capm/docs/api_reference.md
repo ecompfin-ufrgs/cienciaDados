@@ -1,2 +1,3 @@
 # API Reference
-## Descrição precisa de todas os cálculos
+## Descrição precisa e formal de todas as funções que o software oferece;
+## Todos os parâmetros devem ser descritos
