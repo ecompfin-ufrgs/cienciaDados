@@ -2,7 +2,7 @@
 Documentar requisitos é a atividade de produzir um documento que
 resume e organiza os artefatos produzidos nas fases de elicitação e
 análise, visando a elencar e explicar precisamente os requisitos dos
-usuários e do sistema, excluindo dubiedades, contradições
+usuários e do sistema, excluindo dubiedades, contradições (TÓPICO:6 pg:44)
 
 ## Definição de Sistema
 ## Especificação de requisitos de Sistema
