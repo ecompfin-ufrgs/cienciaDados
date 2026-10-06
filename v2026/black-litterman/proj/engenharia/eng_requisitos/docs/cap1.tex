@@ -1,1 +1,28 @@
-\chapter{Introdução}
+\chapter{Introduction}
+
+\section{Objective}
+Develop a web application that, given a universe of assets chosen by the user, computes portfolio
+weights with the Black-Litterman (BL) model, incorporating the manager's views, and evaluates the
+portfolio through a backtest against benchmarks.
+
+\section{Initial scope}
+\begin{itemize}
+  \item Assets traded on B3, using daily data.
+  \item One portfolio per run, with the asset universe defined by the user.
+  \item Risk-free asset: CDI.
+\end{itemize}
+
+\section{Target audience}
+Investors or portfolio managers with basic knowledge of financial markets who already have an
+asset selection criterion and need an economic method to set the weights.
+
+\section{Definitions}
+\begin{description}
+  \item[Prior ($\Pi$):] equilibrium returns implied by the market.
+  \item[View ($P$, $Q$):] the user's opinion on the return of one asset (absolute) or of one asset
+        relative to another (relative).
+  \item[$\Omega$:] uncertainty matrix of the views.
+  \item[$\tau$, $\delta$:] prior uncertainty scalar and risk aversion coefficient.
+  \item[Posterior ($\mu_{BL}$):] expected returns that combine the prior and the views.
+\end{description}
+
