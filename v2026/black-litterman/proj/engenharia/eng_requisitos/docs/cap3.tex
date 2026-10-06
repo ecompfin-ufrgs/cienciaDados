@@ -1,0 +1,84 @@
+\chapter{Requirements Specification}
+
+\section{Functional requirements}
+
+\subsection{Data collection}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement} \\ \midrule
+FR-COL-01 & Download adjusted closing prices via \texttt{yfinance} for each asset in the universe. \\
+FR-COL-02 & Append the \texttt{.SA} suffix to tickers and validate that they exist; an invalid ticker produces an error message. \\
+FR-COL-03 & Collect the daily CDI rate from the Central Bank of Brazil API (SGS, series 12). \\
+FR-COL-04 & Collect the market capitalization of each asset for the prior. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Data treatment and estimation}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement} \\ \midrule
+FR-TRA-01 & Align all series on a common trading calendar. \\
+FR-TRA-02 & Fill missing values with forward-fill of up to 5 business days; exclude, with a warning, assets with insufficient coverage. \\
+FR-TRA-03 & Compute simple returns $R_t = P_t/P_{t-1} - 1$. \\
+FR-TRA-04 & Compute excess returns over the CDI: $r^{ex} = r - r_f$. \\
+FR-TRA-05 & Estimate the annualized ($\times 252$) sample covariance matrix $\Sigma$ and check that it is positive semidefinite. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Black-Litterman model}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement} \\ \midrule
+FR-MOD-01 & Compute market weights $w_{mkt,i} = MC_i / \sum_j MC_j$ within the universe. \\
+FR-MOD-02 & Compute the prior by reverse optimization: $\Pi = \delta \Sigma w_{mkt}$. \\
+FR-MOD-03 & Allow $\delta$ to be set by the user or estimated as $\delta = (E[r_m]-r_f)/\sigma_m^2$. \\
+FR-MOD-04 & Allow absolute views: ``asset $i$ will return $q$\% p.a. above the CDI''. \\
+FR-MOD-05 & Allow relative views: ``asset $i$ will outperform asset $j$ by $q$\% p.a.''. \\
+FR-MOD-06 & Automatically build and validate the $P$ and $Q$ matrices from the views. \\
+FR-MOD-07 & Build $\Omega = \mathrm{diag}(P\tau\Sigma P^{\top})$, with $\tau = 0.05$ by default. \\
+FR-MOD-08 & Compute the posterior $\mu_{BL} = \Pi + \tau\Sigma P^{\top}(P\tau\Sigma P^{\top} + \Omega)^{-1}(Q - P\Pi)$, solving linear systems without explicit matrix inversion. \\
+FR-MOD-09 & With no views, the posterior must equal the prior. \\
+FR-MOD-10 & Compute optimal weights that sum to 1, with no short selling and a maximum weight of 20\% per asset. \\
+FR-MOD-11 & Display the weights table prior $\times$ BL $\times$ difference. \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Backtest}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement} \\ \midrule
+FR-BKT-01 & Run a walk-forward backtest: at each rebalancing date, use only data available up to that date (no look-ahead). \\
+FR-BKT-02 & Make the estimation window and rebalancing frequency configurable (monthly by default). \\
+FR-BKT-03 & Compare against the benchmarks: Ibovespa, CDI and the equal-weight portfolio (1/N). \\
+FR-BKT-04 & Compute cumulative return, annualized volatility, Sharpe ratio and maximum drawdown. \\
+FR-BKT-05 & Plot the equity curve (base 100). \\
+\bottomrule
+\end{tabularx}
+
+\subsection{User interface}
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{ID} & \textbf{Requirement} \\ \midrule
+FR-UI-01 & Allow the user to enter the tickers of the universe. \\
+FR-UI-02 & Allow the user to select an asset and create an absolute or relative view, with its confidence level. \\
+FR-UI-03 & Display the weights, metrics and backtest results. \\
+\bottomrule
+\end{tabularx}
+
+\section{Non-functional requirements}
+\begin{itemize}
+  \item Implemented in Python as a web application (e.g., Streamlit).
+  \item Source code versioned in a Git repository.
+  \item Errors handled with clear messages (invalid ticker, API failure, infeasible optimization).
+  \item Source and extraction date of the data recorded.
+\end{itemize}
+
+\section{Out of initial scope}
+Items identified during elicitation that are left for future versions:
+\begin{itemize}
+  \item Local data cache and automatic retry on API failures.
+  \item Alternative covariance estimators (Ledoit-Wolf, EWMA).
+  \item View confidence via Idzorek's method and basket-versus-basket views.
+  \item Free-float adjustment and the index theoretical portfolio as an alternative prior.
+  \item Transaction costs, sensitivity analysis of $\tau$ and $\delta$, liquidity and outlier diagnostics.
+\end{itemize}
