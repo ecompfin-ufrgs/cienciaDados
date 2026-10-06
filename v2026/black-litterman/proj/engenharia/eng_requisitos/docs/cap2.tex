@@ -1,1 +1,33 @@
-\chapter{Documento de Definição de Sistema}
+\chapter{System Definition Document}
+
+\section{Inputs}
+\begin{enumerate}
+  \item \textbf{Asset universe:} list of tickers provided by the user.
+  \item \textbf{Market equilibrium:} implied returns obtained from the CAPM (reverse optimization),
+        the starting point of the model.
+  \item \textbf{Investor views:} absolute or relative views on asset returns.
+  \item \textbf{Confidence:} the user's level of confidence in each view.
+\end{enumerate}
+
+\section{Processing}
+\begin{enumerate}
+  \item Collection of prices, CDI and market capitalization of the assets.
+  \item Data treatment: alignment, missing values, returns and covariance.
+  \item Construction of the equilibrium prior.
+  \item Combination of the prior with the views (posterior).
+  \item Computation of the optimal weights and backtest of the portfolio.
+\end{enumerate}
+
+\section{Output}
+\begin{itemize}
+  \item Weights table: market portfolio (prior) $\times$ BL portfolio $\times$ difference.
+  \item Expected portfolio metrics: return, volatility and Sharpe ratio.
+  \item Backtest results: chart and metrics compared to the benchmarks.
+\end{itemize}
+
+\section{User requirements}
+\begin{itemize}
+  \item Basic knowledge of financial markets and stocks.
+  \item Ability to express views as expected returns in \% per year.
+\end{itemize}
+
