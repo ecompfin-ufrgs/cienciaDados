@@ -1,0 +1,64 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+\usepackage{authblk}
+\usepackage{todonotes}
+\usepackage{comment}
+\usepackage[round, authoryear]{natbib}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Documento de Requisitos}
+\author[1]{Franco Mendes de Souza}
+\author[2]{Rachel Adolpho}
+
+\affil[1, 2]{Núcleo de ciência de dados e computacional em economia e finanças. Faculdade de Ciências Econômicas. Universidade Federal do Rio Grande do Sul}
+
+\begin{document}
+\maketitle
+
+
+\section{Requisitos de Usuário}
+
+\begin{enumerate}
+    \item Calcular o beta dos ativos
+    \item Calcular o alfa dos ativos
+    \item Calcular os preços dos ativos (objetivo principal do software)
+    \item Calcular o retorno e risco da carteira final (objetivo secundário)
+    
+\end{enumerate}
+
+
+\section{Requisitos de Sistema}
+
+O tempo total de execução do software deve ser de no máximo 5 segundos.
+
+\section{Requisitos de Software}
+
+Os ativos precificados pelo software são as ações listadas no ibovespa, e os dados das ações deverão ser automaticamente coletados via API.
+A arquitetura do software será baseada no modelo de Sharpe (1964) de precificação de ativos e risco. Esse modelo baseia-se na definição de um modelo para a sensibilidade do retorno de um ativo ao risco de mercado, o beta do ativo. Junto dele, o modelo econométrico estimado deverá conter um coeficiente linear alfa, que também precisa ser calculado junto do beta. A partir desses valores deve-se calcular os outros requisitos elicitados, em especial o preço dos ativos. A equação teórica e o modelo econométrico a ser estimado estão abaixo:
+
+\[E(Ri - Rf) = \beta iE(Rm - Rf)\]
+
+\[Ri - Rf = \alpha i + \beta i(Rm - Rf) + \epsilon i\]
+
+
+O software será desenvolvido na linguagem Python, com o uso dos pacotes Pandas e Streamlit, respectivamente para o trabalho com os dados e para a saída final dos resultados.
+
+
+
+
+\end{document}
