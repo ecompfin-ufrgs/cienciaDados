@@ -1,0 +1,123 @@
+\section{Definição do Sistema}
+
+\subsection{Objetivo do Sistema}
+
+O sistema tem como objetivo auxiliar o usuário na análise e seleção
+de carteiras de investimentos, considerando a relação entre risco e
+retorno dos ativos selecionados.
+
+A partir dos dados dos ativos, o sistema deverá avaliar diferentes
+composições de carteira e identificar aquelas que apresentam uma
+relação eficiente entre risco e retorno segundo o modelo de
+Markowitz.
+
+\subsection{Escopo}
+
+O sistema será destinado à análise de carteiras compostas por
+múltiplos ativos. A análise deverá considerar os dados dos ativos
+selecionados para calcular o retorno esperado, o risco e a relação
+entre os ativos.
+
+O sistema deverá permitir a análise de até 30 ativos
+simultaneamente em uma mesma carteira.
+
+Como resultado, o sistema deverá apresentar informações sobre a
+composição das carteiras analisadas, seus respectivos riscos e
+retornos, além da representação da fronteira eficiente.
+
+\subsection{Perfil do Usuário}
+
+O sistema será utilizado por investidores ou analistas interessados
+em analisar diferentes combinações de ativos e avaliar alternativas
+de composição de carteiras.
+
+O usuário será responsável por selecionar os ativos e fornecer ou
+disponibilizar os dados necessários para a realização da análise.
+
+\subsection{Necessidades do Sistema}
+
+Para atender ao objetivo proposto, o sistema deverá possibilitar:
+
+\begin{itemize}
+\item a análise conjunta de diferentes ativos;
+
+
+\item a avaliação da relação entre risco e retorno;
+
+\item a comparação entre diferentes composições de carteira;
+
+\item a identificação de carteiras eficientes;
+
+\item a consulta dos pesos atribuídos aos ativos;
+
+\item a apresentação dos resultados por meio de tabelas e
+gráficos.
+
+
+\end{itemize}
+
+\subsection{Conceitos do Domínio}
+
+O sistema está inserido no domínio de análise e seleção de
+carteiras de investimentos. Os principais conceitos considerados
+são:
+
+\begin{itemize}
+\item \textbf{Ativo:} instrumento financeiro que pode fazer
+parte de uma carteira;
+
+
+\item \textbf{Carteira:} conjunto de ativos organizados de
+acordo com determinada distribuição de pesos;
+
+\item \textbf{Peso:} participação de cada ativo na composição
+da carteira;
+
+\item \textbf{Retorno esperado:} estimativa do retorno de um
+ativo ou de uma carteira;
+
+\item \textbf{Risco:} medida da variabilidade dos retornos da
+carteira;
+
+\item \textbf{Covariância:} medida que representa a relação
+entre os retornos de dois ativos;
+
+\item \textbf{Fronteira eficiente:} conjunto de carteiras que
+apresentam as melhores combinações entre risco e retorno,
+considerando o critério de eficiência adotado pelo modelo de
+Markowitz.
+
+
+\end{itemize}
+
+\subsection{Regras Gerais}
+
+A análise das carteiras será baseada no modelo de seleção de
+carteiras de Markowitz.
+
+Considerando a restrição de não permitir vendas a descoberto, os
+pesos dos ativos deverão satisfazer:
+
+\begin{equation}
+X_i \geq 0
+\end{equation}
+
+Além disso, a soma dos pesos dos ativos que compõem uma carteira
+deverá ser igual a 1:
+
+\begin{equation}
+\sum_{i=1}^{n} X_i = 1
+\end{equation}
+
+A análise deverá considerar o retorno esperado dos ativos e a
+covariância entre eles para determinar o risco das diferentes
+composições de carteira.
+
+\subsection{Limitações e Desempenho}
+
+O sistema deverá considerar como limite operacional a análise
+simultânea de até 30 ativos em uma mesma carteira.
+
+Para esse limite máximo, o sistema deverá realizar os cálculos
+necessários e apresentar a representação gráfica dos resultados em
+até 2 segundos.
