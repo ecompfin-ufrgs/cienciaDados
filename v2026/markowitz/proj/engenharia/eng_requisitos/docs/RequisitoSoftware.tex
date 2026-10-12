@@ -1,0 +1,99 @@
+\section{Especificação de Requisitos de Software}
+
+Esta seção detalha as funcionalidades que o software deverá
+oferecer e as condições que deverão ser atendidas durante sua
+operação. Os requisitos são divididos em funcionais e não
+funcionais.
+
+\subsection{Requisitos Funcionais}
+
+\subsubsection{RF01 -- Seleção de Ativos}
+
+O software deverá permitir que o usuário selecione e remova os
+ativos que participarão da análise da carteira.
+
+\subsubsection{RF02 -- Entrada de Dados}
+
+O software deverá permitir o carregamento de dados históricos pelo usuário e a obtenção de informações sobre os ativos por meio de APIs.
+
+\subsubsection{RF03 -- Cálculo do Retorno Esperado}
+
+O software deverá calcular o retorno esperado dos ativos e das
+carteiras analisadas a partir dos dados fornecidos.
+
+\subsubsection{RF04 -- Cálculo do Risco}
+
+O software deverá calcular o risco das carteiras analisadas,
+considerando a variância e a covariância entre os ativos que as
+compõem.
+
+\subsubsection{RF05 -- Geração de Carteiras}
+
+O software deverá gerar diferentes combinações de pesos para os
+ativos selecionados, respeitando as restrições estabelecidas pelo
+modelo de Markowitz.
+
+\subsubsection{RF06 -- Aplicação das Regras de Alocação}
+
+O software deverá garantir que as carteiras analisadas respeitem
+as regras de alocação definidas para o sistema, incluindo a soma
+dos pesos igual a 1 e a ausência de pesos negativos quando não forem
+permitidas vendas a descoberto.
+
+\subsubsection{RF07 -- Análise de Risco e Retorno}
+
+O software deverá calcular e apresentar a relação entre o risco e o
+retorno esperado das carteiras geradas.
+
+\subsubsection{RF08 -- Identificação da Fronteira Eficiente}
+
+O software deverá identificar as carteiras que compõem a fronteira
+eficiente segundo o critério estabelecido pelo modelo de Markowitz.
+
+\subsubsection{RF09 -- Apresentação dos Resultados}
+
+O software deverá apresentar os resultados da análise, incluindo os
+pesos dos ativos, o risco e o retorno esperado das carteiras
+selecionadas.
+
+\subsubsection{RF10 -- Representação Gráfica}
+
+O software deverá apresentar graficamente a relação entre risco e
+retorno das carteiras analisadas, destacando a fronteira eficiente.
+
+\subsection{Requisitos Não Funcionais}
+
+\subsubsection{RNF01 -- Capacidade Operacional}
+
+O software deverá permitir a análise de carteiras compostas por até
+30 ativos simultaneamente.
+
+\subsubsection{RNF02 -- Desempenho}
+
+O software deverá realizar os cálculos necessários e apresentar a
+representação gráfica dos resultados em, no máximo, 2 segundos para
+uma análise contendo até 30 ativos.
+
+\subsubsection{RNF03 -- Precisão Numérica}
+
+O software deverá realizar os cálculos matemáticos com precisão
+numérica adequada aos objetivos da análise de risco e retorno.
+
+\subsubsection{RNF04 -- Validação dos Dados}
+
+O software deverá validar os dados fornecidos antes da realização
+dos cálculos e deverá informar o usuário quando houver dados
+ausentes, inválidos ou insuficientes para a análise.
+
+\subsubsection{RNF05 -- Consistência dos Resultados}
+
+O software deverá utilizar os mesmos dados e critérios de cálculo
+na apresentação dos resultados numéricos e na representação
+gráfica.
+
+\subsubsection{RNF06 -- Usabilidade}
+
+O software deverá apresentar os dados de entrada e os resultados
+da análise de forma clara e compreensível, permitindo que o usuário
+utilize as principais funcionalidades sem necessidade de
+conhecimento prévio sobre o funcionamento interno do sistema.
