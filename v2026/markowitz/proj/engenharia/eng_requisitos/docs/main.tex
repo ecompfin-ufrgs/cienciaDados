@@ -1,7 +1,45 @@
-\documentclass[a4paper, 12pt]{report}
+\documentclass[11pt,a4paper]{report}
+\usepackage{comment}
+\usepackage{natbib}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil,english]{babel}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{caption} 
+\usepackage{placeins}
+\usepackage{indentfirst}
+\usepackage{parskip}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{adjustbox}
+\usepackage{color}
+\usepackage{authblk}
 
+\title{Documento de requisitos}
+\author{Luís Felipe Almeida de Souza \and Fernando Onzi Ide}
+\date{\today}
 
 \begin{document}
+
+\maketitle
+
+\input{introducao}
+\input{RequisitoUsuario}
+\input{RequisitoSistema}
+\input{RequisitoSoftware}
+\input{conclusao}
+
+
+\nocite{*}
+\bibliographystyle{apalike}
+\bibliography{sample}
+
+
 
 
 \end{document}
