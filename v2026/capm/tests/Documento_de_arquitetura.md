@@ -9,8 +9,9 @@ O software está organizado em duas partes principais, sendo a primeira um pipel
 
 Composto dos seguintes módulos:
 
-1. [pipeline_io](Documento_de_funcoes.md)
-2. [pipeline_clean](Documento_de_funcoes.md)
+1. [pipeline_init
+2. [pipeline_io](Documento_de_funcoes.md)
+3. [pipeline_clean](Documento_de_funcoes.md)
 
 ## MVC
 
