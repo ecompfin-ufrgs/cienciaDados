@@ -5,7 +5,7 @@
 
 ### pipeline_init_():
 
-Este procedimento delimita o domínio de aplicação com a criação de um objeto a partir de uma classe, neste caso serão utilizadas as classes: Ativo, Mercado e o Resultado do Modelo.
+A função cria e inicializa os objetos do domínio: Ativo, o Mercado ou o ResultadoCAPM são criados com as informações de interesse, o objeto passa a armazenar as informações.
 
 ## Módulo pipeline_io
 
