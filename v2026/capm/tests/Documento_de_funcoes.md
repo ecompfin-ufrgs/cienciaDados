@@ -1,8 +1,10 @@
 
 # Documento de funcoes e métodos
 
-## Módulo pipeline_io
+## Módeulo init
+1. pipeline_init(): [Esta função cria uma classe, é executada automaticamente no momento da criação de um objeto](Documento_de_algoritmo.md)
 
+## Módulo pipeline_io
 1. pipeline_input(): [Esta função faz a leitura dos dados de entrada via API](Documento_de_algoritmo.md)
 2. pipeline_output(): [Esta função faz a gravação dos dados em um arquivo csv, após concluídas todas as funções do módulo pipeline_clean](Documento_de_algoritmo.md)
 
