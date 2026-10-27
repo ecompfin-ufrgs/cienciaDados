@@ -5,7 +5,7 @@
 
 ### pipeline_init_():
 
-A função cria é construtora da classe, é executada automaticamente no momento da criação de um objeto, inicializa os atributos do objeto com os valores fornecidos na instanciação.
+A função é construtora da classe, é executada automaticamente no momento da criação de um objeto, inicializa os atributos do objeto com os valores fornecidos na instanciação.
 
 ## Módulo pipeline_io
 
