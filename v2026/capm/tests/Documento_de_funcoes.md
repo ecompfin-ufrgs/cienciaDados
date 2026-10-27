@@ -1,7 +1,7 @@
 
 # Documento de funcoes e métodos
 
-## Módeulo init
+## Módulo init
 1. pipeline_init(): [Esta função cria uma classe, é executada automaticamente no momento da criação de um objeto](Documento_de_algoritmo.md)
 
 ## Módulo pipeline_io
