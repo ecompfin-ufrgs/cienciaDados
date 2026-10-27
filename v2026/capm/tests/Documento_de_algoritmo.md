@@ -5,7 +5,7 @@
 
 ### pipeline_init_():
 
-A função cria e inicializa os objetos do domínio: Ativo, o Mercado ou o ResultadoCAPM são criados com as informações de interesse, o objeto passa a armazenar as informações.
+A função cria é construtora da classe, é executada automaticamente no momento da criação de um objeto, inicializa os atributos do objeto com os valores fornecidos na instanciação.
 
 ## Módulo pipeline_io
 
