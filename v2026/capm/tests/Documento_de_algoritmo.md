@@ -1,6 +1,12 @@
 
 # Documento de projetos de algoritmo
 
+## Módulo Domain
+
+### pipeline_init():
+
+Este procedimento delimita o domínio de aplicação com a criação de um objeto a partir de uma classe, neste caso serão utilizadas as classes: Ativo, Mercado e o Resultado do Modelo.
+
 ## Módulo pipeline_io
 
 ### pipeline_input():
