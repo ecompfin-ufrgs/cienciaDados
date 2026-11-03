@@ -1,3 +1,8 @@
 #função que trata dados faltantes
-
-def 
+#procura dados faltantes 
+#entrada: pd.dataFrame
+#saida:pd.dataframe 
+def missings_treate(dados:pd.dataframe):
+  
+  pass
+  
