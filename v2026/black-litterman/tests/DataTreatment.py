@@ -6,3 +6,5 @@ def missings_treate(dados:pd.dataframe):
   
   pass
   
+def day_identificator(dados:pddataframe):
+  pass
