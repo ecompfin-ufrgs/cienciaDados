@@ -5,95 +5,291 @@ oferecer e as condições que deverão ser atendidas durante sua
 operação. Os requisitos são divididos em funcionais e não
 funcionais.
 
+
+
 \subsection{Requisitos Funcionais}
 
-\subsubsection{RF01 -- Seleção de Ativos}
+\subsubsection{RF01 -- Consulta de Ativos}
 
-O software deverá permitir que o usuário selecione e remova os
-ativos que participarão da análise da carteira.
+O software deverá disponibilizar uma listagem de empresas e
+ETFs negociados na bolsa brasileira (B3), contendo seus
+respectivos nomes e códigos de negociação (tickers). Sempre
+que disponível, a listagem deverá incluir a classificação
+setorial das empresas.
 
-\subsubsection{RF02 -- Entrada de Dados}
+\subsubsection{RF02 -- Seleção de Ativos}
 
-O software deverá permitir o carregamento de dados históricos pelo usuário e a obtenção de informações sobre os ativos por meio de APIs.
+O software deverá permitir que o usuário selecione os ativos 
+que participarão da análise da carteira.
+A seleção deverá respeitar o limite máximo de 30 ativos
+simultaneamente.
 
-\subsubsection{RF03 -- Cálculo do Retorno Esperado}
+\subsubsection{RF03 -- Definição dos Parâmetros Temporais}
 
-O software deverá calcular o retorno esperado dos ativos e das
-carteiras analisadas a partir dos dados fornecidos.
+O software deverá permitir que o usuário defina os parâmetros
+temporais da análise, incluindo:
 
-\subsubsection{RF04 -- Cálculo do Risco}
+\begin{itemize}
+    \item Data inicial e data final do período histórico;
 
-O software deverá calcular o risco das carteiras analisadas,
-considerando a variância e a covariância entre os ativos que as
-compõem.
+    \item Frequência dos dados, com as opções diária,
+    semanal e mensal.
+\end{itemize}
 
-\subsubsection{RF05 -- Geração de Carteiras}
+\subsubsection{RF04 -- Obtenção de Dados Históricos}
 
-O software deverá gerar diferentes combinações de pesos para os
-ativos selecionados, respeitando as restrições estabelecidas pelo
-modelo de Markowitz.
+O software deverá obter automaticamente os dados históricos
+dos ativos selecionados por meio da biblioteca
+\texttt{yfinance}, utilizando informações disponibilizadas
+pelo Yahoo Finance.
 
-\subsubsection{RF06 -- Aplicação das Regras de Alocação}
+A coleta deverá considerar os ativos, o período e a frequência
+definidos pelo usuário, respeitando as limitações de
+disponibilidade histórica da fonte de dados.
 
-O software deverá garantir que as carteiras analisadas respeitem
-as regras de alocação definidas para o sistema, incluindo a soma
-dos pesos igual a 1 e a ausência de pesos negativos quando não forem
-permitidas vendas a descoberto.
+\subsubsection{RF05 -- Tratamento e Preparação dos Dados}
 
-\subsubsection{RF07 -- Análise de Risco e Retorno}
+O software deverá organizar e preparar os dados históricos
+obtidos antes da realização dos cálculos, verificando a
+existência de valores ausentes (\textit{NaN}), registros inválidos e
+diferenças nas datas de negociação entre os ativos.
 
-O software deverá calcular e apresentar a relação entre o risco e o
-retorno esperado das carteiras geradas.
+O software deverá realizar o alinhamento temporal das séries, 
+adotando métodos de preenchimento ou descarte de observações vazias,
+garantindo que os cálculos sejam realizados sobre séries históricas 
+perfeitamente compatíveis e de mesma periodicidade.
 
-\subsubsection{RF08 -- Identificação da Fronteira Eficiente}
+\subsubsection{RF06 -- Cálculo dos Retornos Históricos}
 
-O software deverá identificar as carteiras que compõem a fronteira
-eficiente segundo o critério estabelecido pelo modelo de Markowitz.
+O software deverá calcular os retornos periódicos individuais de
+cada ativo a partir dos preços históricos, utilizando a variação
+percentual entre dois períodos consecutivos, conforme a expressão:
 
-\subsubsection{RF09 -- Apresentação dos Resultados}
+\[
+R_{i,t} = \frac{P_{i,t}-P_{i,t-1}}{P_{i,t-1}}
+\]
 
-O software deverá apresentar os resultados da análise, incluindo os
-pesos dos ativos, o risco e o retorno esperado das carteiras
-selecionadas.
+O cálculo deverá respeitar a frequência selecionada pelo usuário
+(diária, semanal ou mensal).
 
-\subsubsection{RF10 -- Representação Gráfica}
+\subsubsection{RF07 -- Estimativa dos Retornos Esperados Individuais}
 
-O software deverá apresentar graficamente a relação entre risco e
-retorno das carteiras analisadas, destacando a fronteira eficiente.
+O software deverá estimar o retorno esperado de cada ativo por
+meio da média aritmética de seus retornos históricos, conforme
+a expressão:
+
+\[
+\mu_i = \frac{1}{T}\sum_{t=1}^{T}R_{i,t}
+\]
+
+Em que \(T\) representa o número de períodos observados e
+\(R_{i,t}\) representa o retorno histórico do ativo \(i\)
+no período \(t\).
+
+\subsubsection{RF08 -- Cálculo da Matriz de Covariância}
+
+O software deverá calcular as variâncias individuais e as covariâncias entre os retornos históricos dos ativos selecionados, utilizando as observações correspondentes aos mesmos períodos.
+
+O cálculo deverá utilizar a covariância amostral, conforme a expressão:
+
+\[
+\sigma_{ij} =
+\frac{1}{T-1}
+\sum_{t=1}^{T}
+(R_{i,t}-\mu_i)(R_{j,t}-\mu_j)
+\]
+
+Em que \(T\) representa o número de períodos observados, \(R_{i,t}\) e \(R_{j,t}\) representam os retornos históricos dos ativos \(i\) e \(j\) no período \(t\), e \(\mu_i\) e \(\mu_j\) representam seus respectivos retornos esperados.
+
+Os valores calculados deverão compor a matriz de covariância, que será utilizada na avaliação do risco das carteiras.
+
+\subsubsection{RF09 -- Cálculo do Retorno Esperado da Carteira}
+
+O software deverá calcular o retorno esperado das carteiras
+analisadas por meio da média ponderada dos retornos esperados
+individuais dos ativos, considerando os respectivos pesos
+na composição da carteira, conforme a expressão:
+
+\[
+E(R_p) = \sum_{i=1}^{n} w_i \mu_i
+\]
+
+Em que $w_i$ representa o peso do ativo $i$ e $\mu_i$
+representa seu retorno esperado.
+
+\subsubsection{RF10 -- Cálculo do Risco da Carteira}
+
+O software deverá calcular a variância e o desvio-padrão
+de cada carteira simulada ou otimizada, utilizando os pesos
+dos ativos e a matriz de covariância calculada, conforme
+as expressões:
+
+\[
+V(R_p) = \sum_{i=1}^{n}\sum_{j=1}^{n}
+w_i w_j \sigma_{ij}
+\]
+
+\[
+\sigma_p = \sqrt{V(R_p)}
+\]
+
+Em que $w_i$ e $w_j$ representam os pesos dos ativos na
+carteira e $\sigma_{ij}$ representa a covariância entre
+os retornos dos ativos $i$ e $j$.
+
+\subsubsection{RF11 -- Simulação de Carteiras}
+
+O software deverá permitir que o usuário simule diferentes
+composições de carteira, definindo os pesos atribuídos a
+cada ativo selecionado.
+
+As distribuições de capital deverão respeitar as seguintes
+restrições:
+
+\[
+\sum_{i=1}^{n} w_i = 1
+\qquad
+w_i \geq 0
+\]
+
+Em que $w_i$ representa a participação do ativo $i$ na
+composição da carteira.
+
+\subsubsection{RF12 -- Otimização de Carteiras}
+
+O software deverá resolver o problema de otimização de portfólios de Markowitz, estruturado como um problema de Programação Quadrática (QP). O algoritmo deverá determinar o vetor de pesos ótimos \(\mathbf{w} = [w_1, w_2, \dots, w_n]^T\) que minimiza a variância da carteira para um determinado nível de retorno esperado alvo (\(R_{alvo}\)).
+
+O modelo matemático a ser executado pelo motor de otimização é:
+
+\[
+\min_{\mathbf{w}} \quad \mathbf{w}^T \mathbf{\Sigma} \mathbf{w}
+\]
+
+Sujeito a:
+
+\[
+\sum_{i=1}^{n} w_i \mu_i = R_{alvo}
+\]
+
+\[
+\sum_{i=1}^{n} w_i = 1
+\]
+
+\[
+w_i \geq 0, \quad \forall i \in \{1, \dots, n\}
+\]
+
+Em que \(\mathbf{\Sigma}\) represents a matriz de covariância \(n \times n\) dos retornos históricos e \(\mu_i\) representa o retorno esperado do ativo \(i\).
+
+O sistema deverá automatizar esse processo iterativamente, variando o parâmetro \(R_{alvo}\) em intervalos discretos dentro do intervalo de retornos esperados viáveis para as carteiras. Para cada valor definido, deverá executar uma otimização e obter a respectiva carteira de menor variância. Os resultados deverão ser reunidos para gerar o conjunto de carteiras eficientes e mapear a fronteira eficiente.
+
+\subsubsection{RF13 -- Identificação da Fronteira Eficiente}
+
+O software deverá filtrar as carteiras geradas pelo processo de otimização (RF12) para isolar o conjunto pertencente à Fronteira Eficiente. O critério de filtragem deve descartar soluções ineficientes, definindo a curva estritamente como o subconjunto de carteiras otimizadas cujo retorno esperado seja igual ou superior ao retorno esperado da Carteira de Mínima Variância (CMV).
+
+\subsubsection{RF14 -- Comparação de Carteiras}
+
+O software deverá permitir a comparação entre diferentes
+composições de carteira, apresentando seus respectivos
+pesos, retornos esperados e medidas de risco.
+
+\subsubsection{RF15 -- Apresentação da Composição das Carteiras}
+
+O software deverá apresentar a participação percentual de
+cada ativo nas carteiras analisadas, permitindo identificar
+a distribuição do capital investido.
+
+\subsubsection{RF16 -- Análise da Composição Setorial}
+
+O software deverá agrupar os ativos de acordo com seus
+respectivos setores econômicos e calcular a participação
+percentual de cada setor na composição das carteiras
+analisadas.
+
+A participação de cada setor deverá corresponder à soma
+dos pesos dos ativos pertencentes ao respectivo setor.
+Ativos sem classificação setorial aplicável deverão ser
+identificados separadamente.
+
+\subsubsection{RF17 -- Representação Gráfica e Apresentação
+dos Resultados}
+
+O software deverá apresentar os resultados da análise por
+meio de tabelas e gráficos, incluindo:
+
+\begin{itemize}
+    \item Retorno esperado e risco das carteiras;
+
+    \item Distribuição dos pesos entre os ativos;
+
+    \item Distribuição percentual entre os setores econômicos;
+
+    \item Representação gráfica da relação entre risco e
+    retorno;
+
+    \item Destaque para as carteiras pertencentes à fronteira
+    eficiente.
+\end{itemize}
 
 \subsection{Requisitos Não Funcionais}
 
 \subsubsection{RNF01 -- Capacidade Operacional}
 
-O software deverá permitir a análise de carteiras compostas por até
-30 ativos simultaneamente.
+O software deverá permitir a análise de carteiras compostas
+por até 30 ativos simultaneamente, garantindo o funcionamento
+das operações de cálculo, simulação e otimização dentro
+desse limite.
 
 \subsubsection{RNF02 -- Desempenho}
 
-O software deverá realizar os cálculos necessários e apresentar a
-representação gráfica dos resultados em, no máximo, 2 segundos para
-uma análise contendo até 30 ativos.
+O software deverá realizar os cálculos necessários e
+apresentar a representação gráfica dos resultados em,
+no máximo, 2 segundos para uma análise contendo até 30
+ativos, considerando que os dados históricos já estejam
+disponíveis para processamento.
 
 \subsubsection{RNF03 -- Precisão Numérica}
 
-O software deverá realizar os cálculos matemáticos com precisão
-numérica adequada aos objetivos da análise de risco e retorno.
+O software deverá realizar os cálculos de retornos,
+variâncias, covariâncias e otimização de carteiras com
+precisão numérica adequada aos objetivos da análise de
+risco e retorno, evitando erros decorrentes de aproximações
+numéricas excessivas.
 
 \subsubsection{RNF04 -- Validação dos Dados}
 
-O software deverá validar os dados fornecidos antes da realização
-dos cálculos e deverá informar o usuário quando houver dados
-ausentes, inválidos ou insuficientes para a análise.
+O software deverá validar os parâmetros informados pelo
+usuário e os dados históricos obtidos antes da realização
+dos cálculos.
+
+Deverão ser identificados dados ausentes, inválidos ou
+insuficientes, bem como períodos com disponibilidade
+incompatível com a frequência selecionada, informando
+o usuário quando não for possível realizar a análise.
 
 \subsubsection{RNF05 -- Consistência dos Resultados}
 
-O software deverá utilizar os mesmos dados e critérios de cálculo
-na apresentação dos resultados numéricos e na representação
-gráfica.
+O software deverá utilizar os mesmos dados, critérios e
+parâmetros de cálculo na apresentação dos resultados
+numéricos e na representação gráfica, garantindo a
+consistência das informações apresentadas.
+
+Os cálculos de retorno esperado, risco e otimização
+deverão considerar a mesma frequência de observações
+históricas selecionada pelo usuário.
 
 \subsubsection{RNF06 -- Usabilidade}
 
-O software deverá apresentar os dados de entrada e os resultados
-da análise de forma clara e compreensível, permitindo que o usuário
-utilize as principais funcionalidades sem necessidade de
-conhecimento prévio sobre o funcionamento interno do sistema.
+O software deverá apresentar os dados de entrada e os
+resultados da análise de forma clara e compreensível,
+permitindo que o usuário utilize as principais
+funcionalidades sem necessidade de conhecimento prévio
+sobre o funcionamento interno do sistema.
+
+\subsubsection{RNF07 -- Tratamento de Falhas Externas}
+
+O software deverá tratar eventuais falhas na obtenção dos
+dados históricos, incluindo indisponibilidade da fonte
+externa, ausência de informações para os ativos selecionados
+e falhas de conexão, informando o usuário sobre a ocorrência.
+
