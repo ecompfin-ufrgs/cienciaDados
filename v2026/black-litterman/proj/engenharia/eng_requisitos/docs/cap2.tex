@@ -1,33 +1,47 @@
 \chapter{System Definition Document}
 
+\section{Components}
+\begin{enumerate}
+  \item \textbf{Study pipeline:} selects assets, builds the historical dataset and runs the backtest
+        outside the web application.
+  \item \textbf{Data routine:} collects data outside the server on business days and generates a
+        snapshot with the model inputs.
+  \item \textbf{Backend:} Python API deployed on PythonAnywhere, which reads the snapshot and
+        performs the model calculations.
+  \item \textbf{Frontend:} separate user interface that consumes the API. Streamlit is the initial
+        option and may change.
+\end{enumerate}
+
 \section{Inputs}
 \begin{enumerate}
-  \item \textbf{Asset universe:} list of tickers provided by the user.
-  \item \textbf{Market equilibrium:} implied returns obtained from the CAPM (reverse optimization),
-        the starting point of the model.
-  \item \textbf{Investor views:} absolute or relative views on asset returns.
-  \item \textbf{Confidence:} the user's level of confidence in each view.
+  \item \textbf{Asset universe:} assets selected by liquidity in the study, or selected by the user
+        from the catalog in the application.
+  \item \textbf{Market equilibrium:} market capitalization weights, used to obtain implied returns
+        by reverse optimization, consistent with the CAPM.
+  \item \textbf{Investor views:} absolute or relative views on asset returns, available for current
+        portfolios.
 \end{enumerate}
 
 \section{Processing}
 \begin{enumerate}
+  \item Selection of the assets by liquidity.
   \item Collection of prices, CDI and market capitalization of the assets.
   \item Data treatment: alignment, missing values, returns and covariance.
   \item Construction of the equilibrium prior.
   \item Combination of the prior with the views (posterior).
-  \item Computation of the optimal weights and backtest of the portfolio.
+  \item Computation of the optimal weights.
+  \item Walk-forward backtest in the study, without views in the main version.
 \end{enumerate}
 
 \section{Output}
 \begin{itemize}
   \item Weights table: market portfolio (prior) $\times$ BL portfolio $\times$ difference.
   \item Expected portfolio metrics: return, volatility and Sharpe ratio.
-  \item Backtest results: chart and metrics compared to the benchmarks.
+  \item Study backtest results: chart and metrics compared to the benchmarks.
 \end{itemize}
 
 \section{User requirements}
 \begin{itemize}
   \item Basic knowledge of financial markets and stocks.
-  \item Ability to express views as expected returns in \% per year.
+  \item Ability to express views as expected returns in \% per year above the CDI.
 \end{itemize}
-
