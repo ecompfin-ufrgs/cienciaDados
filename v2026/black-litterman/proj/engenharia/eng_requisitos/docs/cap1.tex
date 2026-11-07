@@ -1,28 +1,38 @@
 \chapter{Introduction}
 
 \section{Objective}
-Develop a web application that, given a universe of assets chosen by the user, computes portfolio
-weights with the Black-Litterman (BL) model, incorporating the manager's views, and evaluates the
-portfolio through a backtest against benchmarks.
+Develop an open-source tool that computes portfolio weights for Brazilian stocks with the
+Black-Litterman (BL) model, incorporating the manager's views. The project has two products:
+\begin{itemize}
+  \item a web application, in which the user selects assets from a catalog and obtains the weights
+        of a portfolio for the current date;
+  \item a documented backtest study, which evaluates the method against benchmarks and whose
+        results are displayed in the application.
+\end{itemize}
 
 \section{Initial scope}
 \begin{itemize}
-  \item Assets traded on B3, using daily data.
-  \item One portfolio per run, with the asset universe defined by the user.
+  \item Stocks and units traded on B3.
+  \item Asset selection by liquidity, based on the B3 historical quotes files (COTAHIST).
+  \item A study portfolio with the 10 most liquid assets at each rebalancing date.
+  \item Daily data in the application and weekly data in the study.
+  \item One portfolio per run in the application, with at least 5 assets from the catalog.
   \item Risk-free asset: CDI.
+  \item Backend deployed on PythonAnywhere and a separate frontend, initially in Streamlit.
 \end{itemize}
 
 \section{Target audience}
-Investors or portfolio managers with basic knowledge of financial markets who already have an
-asset selection criterion and need an economic method to set the weights.
+Investors or portfolio managers with basic knowledge of financial markets who need an economic
+method to set the weights of a portfolio of liquid Brazilian stocks.
 
 \section{Definitions}
 \begin{description}
-  \item[Prior ($\Pi$):] equilibrium returns implied by the market.
+  \item[Catalog:] list of the 30 most liquid tickers available for selection in the application.
+  \item[Market weights ($w_{mkt}$):] market capitalization weights, renormalized within the universe.
+  \item[Prior ($\Pi$):] equilibrium returns implied by the market, consistent with the CAPM.
   \item[View ($P$, $Q$):] the user's opinion on the return of one asset (absolute) or of one asset
         relative to another (relative).
   \item[$\Omega$:] uncertainty matrix of the views.
   \item[$\tau$, $\delta$:] prior uncertainty scalar and risk aversion coefficient.
   \item[Posterior ($\mu_{BL}$):] expected returns that combine the prior and the views.
 \end{description}
-
