@@ -1,0 +1,8 @@
+# Algoritmo desenvolvido para tentar implementar a função clean_repeat do módulo pipeline_clean
+
+teste_repeat = teste_na
+
+for i in range(len(teste_repeat)):
+    for j in range(i + 1, len(teste_repeat)):
+        if teste_na[i] == teste_na[j]:
+            teste_repeat = np.delete(teste_repeat, j)
