@@ -15,6 +15,12 @@ def clean_na(data):
     vetor_filtrado = data[mascara]
     return vetor_filtrado
 
-def clean_repeat(data: list) -> list:
-    pass
+def clean_repeat(data):
+    aux = []
+    for i in range(len(data)):
+        for j in range(i + 1, len(data)):
+            if data[i] == data[j]:
+                aux.append(j)
 
+    vetor_filtrado = np.delete(data, aux)
+    return vetor_filtrado
