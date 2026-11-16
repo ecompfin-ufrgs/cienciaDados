@@ -33,14 +33,46 @@ Esta função recebe como entrada a variável de saida da função clean_na(), o
 
 ## Módulo mvc_model
 
-### estimation():
+### class ativo
 
-Esta função recebe como entrada os retornos de um dos ativos (presentes na planilha csv resultante do pipeline), o retorno de mercado e o retorno livre de risco. Em seguida, implementa a estimação do modelo econométrico descrito no documento de requisitos. Após isso, armazena numa lista o alfa da estimação. Após isso, faz a mesma coisa com o beta. Por fim, define como valor de saída a lista contendo o alfa e o beta do ativo.
+Esta classe defini um objeto para o ativo selecionado, que receberá os seguintes atributos:
+
+1. ticker: o código do ativo
+2. ri: a lista com as rentabilidades do ativo em um determinado período
+3. rm: a lista com as rentabilidades de mercado durante o mesmo período
+4. rf: a lista com as rentabilidades do ativo livre de risco durante o mesmo período
+
+### estimation(): 
+
+Implementa algum método de estimação, para estimar a equação econométrica descrita no documento de requisitos. Retorna como saída uma lista, contendo dois valores, respectivamente o alfa e o beta do ativo.
+
+### alfa():
+
+Este método tem como objetivo apenas simplificar a seleção do coeficiente alfa do modelo. Desse modo, o algoritmo apenas invoca o método estimation() e seleciona o valor alfa, ou seja, o primeiro valor da lista que estimation() retorna como saída. Esse valor alfa é a saída do método alfa().
+
+### beta():
+
+Este método, assim como o anterior, tem como objetivo apenas simplificar a seleção do coeficiente beta do modelo. Desse modo, o algoritmo apenas invoca o método estimation() e seleciona o valor beta, ou seja, o segundo valor da lista que estimation() retorna como saída. Esse valor beta é a saída do método beta().
 
 ### price():
 
-calcula o preço teórico do ativo
+calcula o preço teórico do ativo, a partir dos valores de alfa e beta obtidos na estimação. O algoritmo consiste em aplicar o seguinte cálculo:
+
+P = Pi*( (ri - rf) + rf) + Pi
+
+onde:
+
+P = Preço final estimado do ativo.
+Pi = Preço inicial do ativo.
+(ri - rf) = A resposta do ativo à variação da rentabilidade de mercado, obtido a partir do modelo de sharpe.
+rf = A rentabilidade do ativo livre de risco.
+
+Importante lembrar que os valores precisam estar ajustados aos prazos que se está trablahando. Por exemplo, se estamos considerando variação diária, mas temos apenas os dados de rentabilidade anual do ativo livre de risco, precisamos calcular o equivalente diário dessa taxa.
 
 ### risk_return():
 
-calcula o risco e retorno da carteira ótima
+Esta função recebe como entrada um valor alfa (NÃO é o mesmo alfa do método estimation() da classe ativo), que representa a parcela do capital que o usuário pretende investir em ativos livres de rísco, e retorna como saída uma lista contendo a rentabilidade esperada da carteira ótima de mercado e o rísco esperado da carteira ótima de mercado. Os valores serão computados segundo as fórmnulas abaixo (extraídas do artigo de Sharpe):
+
+Rentabilidade esperada = alfa*(rentabilidade sem rísco) + (1 - alfa)*(rentabilidade de mercado)
+Rísco esperado = (1 - alfa)*(Desvio padrão da rentabilidade de mercado)
+
