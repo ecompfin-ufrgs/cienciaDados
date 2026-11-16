@@ -74,5 +74,6 @@ Importante lembrar que os valores precisam estar ajustados aos prazos que se est
 Esta função recebe como entrada um valor alfa (NÃO é o mesmo alfa do método estimation() da classe ativo), que representa a parcela do capital que o usuário pretende investir em ativos livres de rísco, e retorna como saída uma lista contendo a rentabilidade esperada da carteira ótima de mercado e o rísco esperado da carteira ótima de mercado. Os valores serão computados segundo as fórmnulas abaixo (extraídas do artigo de Sharpe):
 
 Rentabilidade esperada = alfa*(rentabilidade sem rísco) + (1 - alfa)*(rentabilidade de mercado)
+
 Rísco esperado = (1 - alfa)*(Desvio padrão da rentabilidade de mercado)
 
