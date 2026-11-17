@@ -35,7 +35,7 @@ Esta função recebe como entrada a variável de saida da função clean_na(), o
 
 ### class ativo
 
-Esta classe defini um objeto para o ativo selecionado, que receberá os seguintes atributos:
+Esta classe define um objeto para o ativo selecionado, que receberá os seguintes atributos:
 
 1. ticker: o código do ativo
 2. ri: a lista com as rentabilidades do ativo em um determinado período
