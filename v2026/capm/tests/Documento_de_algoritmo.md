@@ -11,7 +11,7 @@ A função é construtora da classe, é executada automaticamente no momento da 
 
 ### pipeline_input():
 
-A função não recebe nenhum argumento. A primeira linha executará uma leitura de dados via API, e armazenará a lista de dados numa variável. Em seguida, retorna esta variável como valor de saída.
+A função não recebe nenhum argumento. A primeira linha executará uma leitura de dados via API (yfinance), e armazenará a lista de dados numa variável. Em seguida, retorna esta variável como valor de saída. 
 
 ### pipeline_output():
 
