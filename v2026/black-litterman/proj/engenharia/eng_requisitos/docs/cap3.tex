@@ -22,7 +22,7 @@ FR-SEL-06 & Generate the application catalog with the 30 most liquid assets from
 FR-COL-01 & Download adjusted closing prices from a free source, initially \texttt{yfinance}, for each asset in the universe. \\
 FR-COL-02 & Append the \texttt{.SA} suffix to tickers and validate that they exist; an invalid ticker produces an error message. \\
 FR-COL-03 & Collect the daily CDI rate from the Central Bank of Brazil API (SGS, series 12). \\
-FR-COL-04 & Collect the current market capitalization of each asset for the application prior. \\
+FR-COL-04 & Collect the current market capitalization of each asset for the application prior, initially from \texttt{yfinance}. \\
 FR-COL-05 & Collect historical share counts from CVM: FRE since 2010 and the ITR capital composition since 2020, using the delivery date of each document. \\
 FR-COL-06 & Accept external datasets in a fixed file format, so that the backtest does not depend on the data source. \\
 FR-COL-07 & Run a routine outside the server on business days to generate a snapshot with $\Sigma$, market capitalizations, $\delta$ and the previous close of the catalog assets. \\
@@ -34,7 +34,7 @@ FR-COL-08 & If the routine fails, keep the last valid snapshot and show the date
 \begin{tabularx}{\textwidth}{@{}lX@{}}
 \toprule
 \textbf{ID} & \textbf{Requirement} \\ \midrule
-FR-TRA-01 & Align all series on the ANBIMA business-day calendar; days with CDI and no price follow the missing data rule. \\
+FR-TRA-01 & Align prices on the B3 trading calendar and compound the CDI on the ANBIMA business-day calendar, both from the \texttt{bizdays} library. \\
 FR-TRA-02 & Fill missing values with forward-fill of up to 5 business days; exclude, with a warning, assets with insufficient coverage. \\
 FR-TRA-03 & Compute simple returns $R_t = P_t/P_{t-1} - 1$. \\
 FR-TRA-04 & Compute excess returns over the CDI: $r^{ex} = r - r_f$. \\
@@ -106,7 +106,7 @@ FR-UI-04 & (Optional) Track the finished portfolio with the previous business da
   \item Frontend separated from the backend; Streamlit is the initial option.
   \item The frontend does not import the calculation modules.
   \item The backend does not query external data sources during user requests; it only reads the snapshot.
-  \item The application domain uses object-oriented programming; other layers may use modular programming.
+  \item The application domain uses object-oriented programming for real-world objects (asset, market, portfolio, view and model parameters); the Black-Litterman model is implemented as stateless functions; other layers may use modular programming.
   \item Source code versioned in a Git repository.
   \item Errors handled with clear messages (invalid ticker, API failure, infeasible optimization).
   \item Source and extraction date of the data recorded.
@@ -117,7 +117,8 @@ FR-UI-04 & (Optional) Track the finished portfolio with the previous business da
 \section{Out of initial scope}
 Items identified during elicitation that are left for future versions:
 \begin{itemize}
-  \item Automatic retry on API failures.
+  \item Automatic retry on API failures and fallback data sources.
+  \item In the initial phase, data comes only from \texttt{yfinance} and the Central Bank of Brazil; COTAHIST, CVM and brapi are collected in later phases.
   \item Historical simulation of a user portfolio in the application.
   \item Alternative covariance estimators as defaults (Ledoit-Wolf may be used as a robustness check).
   \item Posterior covariance $\Sigma_{BL}$ in the optimization.

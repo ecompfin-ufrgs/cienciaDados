@@ -22,7 +22,7 @@ Para o modelo BL funcionar, são necessárias algumas entradas.
 | ID | Requisito |
 |---|---|
 | RF-SEL-01 | Ler os arquivos COTAHIST baixados **manualmente** do site da B3, sem coleta automatizada. |
-| RF-SEL-02 | Filtrar os registros de ações e units do mercado à vista em lote padrão, conforme o [documento de fluxo de dados](../project/fluxo_dados_backtest_bl.md). |
+| RF-SEL-02 | Filtrar os registros de ações e units do mercado à vista em lote padrão. |
 | RF-SEL-03 | Calcular, em cada data de rebalanceamento, o ranking de liquidez com os 252 pregões **estritamente anteriores**, excluindo papéis com presença inferior a 80%. |
 | RF-SEL-04 | Manter uma classe por empresa e exigir histórico suficiente para estimar Σ. |
 | RF-SEL-05 | Selecionar os **10 ativos mais líquidos** para a carteira do estudo. |
@@ -34,7 +34,7 @@ Para o modelo BL funcionar, são necessárias algumas entradas.
 | RF-COL-01 | Baixar série histórica de preços de fechamento **ajustado** (proventos e desdobramentos) de fonte gratuita, inicialmente `yfinance`, para cada ticker do universo, em janela e frequência parametrizáveis. |
 | RF-COL-02 | Normalizar tickers B3 acrescentando o sufixo `.SA` e **validar a existência** do ticker antes de prosseguir; ticker inválido gera erro nomeado, não derruba a sessão. |
 | RF-COL-03 | Coletar a série do **ativo livre de risco (CDI)** na API do BCB (SGS), série **12** (CDI % ao dia) — com a série **4389** (CDI a.a., base 252) como referência para anualização. |
-| RF-COL-04 | Coletar o **valor de mercado (market cap) atual** de cada ativo para construir o vetor de pesos do prior no app. |
+| RF-COL-04 | Coletar o **valor de mercado (market cap) atual** de cada ativo para construir o vetor de pesos do prior no app, inicialmente pelo `yfinance`. |
 | RF-COL-05 | Coletar **volume financeiro diário** (preço × quantidade) para o diagnóstico de liquidez. |
 | RF-COL-06 | Executar uma **rotina diária** fora do servidor, em dias úteis, que gere um **snapshot** com Σ, market caps, δ e fechamentos D-1 dos ativos do catálogo. |
 | RF-COL-07 | Se a rotina falhar, manter o último snapshot válido e informar a data dos dados ao usuário. |
@@ -47,7 +47,7 @@ Para o modelo BL funcionar, são necessárias algumas entradas.
 ### tratamento e estimação
 | ID | Requisito |
 |---|---|
-| RF-TRA-01 | Alinhar todas as séries no **calendário de dias úteis da ANBIMA**. Dias com CDI e sem preço seguem a regra de dados faltantes. |
+| RF-TRA-01 | Alinhar os preços no **calendário de pregões da B3** e capitalizar o CDI no **calendário de dias úteis da ANBIMA**, ambos da biblioteca `bizdays`. |
 | RF-TRA-02 | Tratar dados faltantes por método aceito: *forward-fill* limitado a **N dias úteis** (default N = 5) para feriados/não-negociação; excluir do universo ativo com cobertura abaixo de um limiar — com aviso explícito ao usuário. |
 | RF-TRA-03 | Construir a série de **retornos simples** `R = P_t/P_{t-1} − 1`. |
 | RF-TRA-04 | Converter o CDI para a **mesma frequência** dos retornos dos ativos e construir a série de **excesso de retorno** `r_ex = r − r_f`. |
@@ -152,7 +152,7 @@ Para o modelo BL funcionar, são necessárias algumas entradas.
 | ID | Categoria | Requisito |
 |---|---|---|
 | RNF-01 | Plataforma | Backend em Python ≥ 3.11, com API (Flask como opção inicial). Frontend separado, inicialmente em Streamlit, podendo mudar. |
-| RNF-02 | Arquitetura | Separar coleta, domínio, preparação numérica, backtest, API e frontend. O domínio usa programação orientada a objetos, e as demais camadas podem ser modulares. Domínio e preparação numérica não fazem I/O, e o frontend não importa os módulos de cálculo. |
+| RNF-02 | Arquitetura | Separar coleta, domínio, preparação numérica, backtest, API e frontend. O domínio usa programação orientada a objetos para os objetos reais (ativo, mercado, carteira, view e parâmetros), e o modelo Black-Litterman fica em funções. As demais camadas podem ser modulares. Domínio e preparação numérica não fazem I/O, e o frontend não importa os módulos de cálculo. |
 | RNF-03 | Reprodutibilidade | Mesmos insumos devem gerar os mesmos resultados, com dependências fixadas. |
 | RNF-04 | Precisão numérica | Usar `float64`, sem inversão explícita de matriz, com verificação de PSD e alerta de mau condicionamento. |
 | RNF-05 | Corretude | Reproduzir um exemplo publicado do modelo com tolerância ≤ 1e-4. |
