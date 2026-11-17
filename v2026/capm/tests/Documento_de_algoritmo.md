@@ -15,7 +15,7 @@ A função não recebe nenhum argumento. A primeira linha executará uma leitura
 
 ### pipeline_output():
 
-Este procedimento recebe como entrada os dados de saída da função clean_repeat(), do módulo pipeline_clean, ou seja, recebe como entrada os dados completamente pré-processados. Em seguida, executa um comando de gravação dos dados numa planilha csv, e não retorna nada como saída.
+Este procedimento recebe como entrada os dados de saída da função clean_repeat(), do módulo pipeline_clean, ou seja, recebe como entrada os dados completamente pré-processados. Em seguida, executa um comando de gravação dos dados numa planilha csv, e não retorna nada como saída. <ASSEGURAR QUE OS NOMES DOS ATIVOS NÃO SERÃO APAGADOS>
 
 ## Módulo pipeline_clean
 
