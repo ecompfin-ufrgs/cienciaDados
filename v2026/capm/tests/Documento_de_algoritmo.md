@@ -29,7 +29,7 @@ Esta função recebe como entrada a variável de saída da função clean_types(
 
 ### clean_repeat():
 
-Esta função recebe como entrada a variável de saida da função clean_na(), ou seja, recebe os dados limpos tanto de erros de tipo quanto de dados faltantes. Em seguida, executa um loop sobre a lista de dados de entrada, verificando numa instrução if se cada eemento da lista é um dados repetido de algum outro. Caso seja, será removido da lista. Ao final do loop, a lista resultante é definida como valor de retorno.
+Esta função recebe como entrada a variável de saida da função clean_na(), ou seja, recebe os dados limpos tanto de erros de tipo quanto de dados faltantes. Em seguida, executa um loop sobre a lista de dados de entrada, verificando numa instrução if se cada eemento da lista é um dados repetido de algum outro. Caso seja, será removido da lista. Ao final do loop, a lista resultante é definida como valor de retorno. <EVITAR QUE AS RENTABILIDADES IGUAIS SEJAM REMOVIDAS>
 
 ## Módulo mvc_model
 
