@@ -28,11 +28,15 @@ Cada item registra um problema encontrado, a decisão tomada e os requisitos afe
 | A-12 | Confiança das views | Decidido |
 | A-13 | Backtest no app | Decidido |
 | A-14 | Fonte de dados do app | Decidido |
-| A-15 | Calendário | Decidido |
+| A-15 | Calendário | Revisado por A-21 |
 | A-16 | Publicação dos dados | Decidido; Bloomberg em aberto |
 | A-17 | Estimador e frequência | Decidido |
-| A-18 | Acompanhamento da carteira | Decidido |
+| A-18 | Acompanhamento da carteira | Adiado |
 | A-19 | Paradigma de programação | Decidido |
+| A-20 | Objetos do domínio | Decidido |
+| A-21 | Calendários B3 e ANBIMA | Decidido |
+| A-22 | Fontes da fase inicial | Decidido |
+| A-23 | Tipos de dados nos cálculos | Decidido |
 
 ## Universo e dados
 
@@ -80,7 +84,7 @@ Cada item registra um problema encontrado, a decisão tomada e os requisitos afe
 
 ### A-15: Calendário
 
-- **Status:** Decidido.
+- **Status:** Revisado por A-21, que separa o calendário de pregão do calendário financeiro.
 - **Problema:** as séries precisam de um calendário comum. A interseção de pregões eliminaria os dados faltantes antes de medir a cobertura.
 - **Decisão:** usar o calendário de dias úteis da ANBIMA como base.
 - **Observações:**
@@ -88,6 +92,29 @@ Cada item registra um problema encontrado, a decisão tomada e os requisitos afe
   - Nesses dias há CDI, mas não há preço. Eles seguem a regra de dados faltantes.
   - No estudo semanal, se a quarta-feira não for dia útil, usar o dia útil anterior.
 - **Requisitos afetados:** RF-TRA-01, RF-TRA-02, FR-TRA-01 e FR-TRA-02.
+
+### A-21: Calendários B3 e ANBIMA
+
+- **Status:** Decidido.
+- **Problema:** um único calendário ANBIMA não representa os dias de pregão. A B3 não negocia em alguns dias úteis financeiros, como 24 e 31 de dezembro, e nesses dias o CDI corre normalmente.
+- **Decisão:** usar dois calendários da biblioteca `bizdays`, diretamente, sem uma classe própria:
+  - **B3:** datas de preço, rebalanceamento e data dos dados;
+  - **ANBIMA:** capitalização do CDI.
+- **Justificativa:** a `bizdays` já traz os dois calendários e as operações de dias úteis. Uma classe própria só repetiria a interface dela.
+- **Consequência:** o domínio passa a depender da `bizdays`, que é pequena e não acessa a rede.
+- **Requisitos afetados:** RF-TRA-01, FR-TRA-01 e RNF-02.
+
+### A-22: Fontes da fase inicial
+
+- **Status:** Decidido.
+- **Problema:** a coleta com cinco fontes deixava a primeira versão complexa.
+- **Decisão:** a fase inicial coleta apenas:
+  - **yfinance:** preços ajustados por proventos, Ibovespa e market cap atual;
+  - **BCB:** CDI, série 12 do SGS.
+- **Adiado:** COTAHIST (seleção por liquidez), CVM (market cap histórico) e brapi (cotação atual para marcar a mercado uma carteira pronta).
+- **Regras:** cada fonte é uma função que devolve o dado no formato do projeto e a sua origem (`Provenance`). Não há fonte de reserva nem ordem de tentativas.
+- **Consequência:** o market cap do yfinance é só o valor de hoje. Ele serve para o app, mas não para o backtest, que continua dependendo da CVM (A-04).
+- **Requisitos afetados:** RF-COL-04, RF-COL-11, RF-SEL-01, FR-COL-04, FR-COL-05 e FR-SEL-01.
 
 ### A-16: Publicação dos dados
 
@@ -190,7 +217,7 @@ Cada item registra um problema encontrado, a decisão tomada e os requisitos afe
 
 ### A-18: Acompanhamento da carteira
 
-- **Status:** Decidido.
+- **Status:** Adiado. A brapi saiu da fase inicial (A-22); a decisão abaixo vale quando o recurso for retomado.
 - **Problema:** a equipe quer acompanhar a carteira depois de pronta, mas o escopo inicial excluía dados em tempo real.
 - **Decisão:** incluir, como recurso opcional, um acompanhamento diário com o fechamento do dia útil anterior (D-1). A rotina diária coleta e guarda esse dado no snapshot. O servidor só lê o resultado. A fonte candidata é a brapi.
 - **Justificativa:** uma rotina evita coletar dados durante o acesso do usuário. Como a conta gratuita do PythonAnywhere usada no projeto não tem tarefas agendadas, a rotina roda fora do servidor.
@@ -201,6 +228,31 @@ Cada item registra um problema encontrado, a decisão tomada e os requisitos afe
 
 - **Status:** Decidido.
 - **Problema:** a arquitetura precisava definir como organizar o código do modelo e das demais camadas.
-- **Decisão:** o domínio da aplicação usa programação orientada a objetos. As demais camadas podem seguir programação modular.
+- **Decisão:** o domínio da aplicação usa programação orientada a objetos. As demais camadas podem seguir programação modular. O modelo Black-Litterman fica em funções, dentro do domínio (A-20).
 - **Justificativa:** classes reúnem os conceitos e validações do modelo. Funções mantêm simples a coleta, a preparação e a execução.
 - **Requisitos afetados:** RNF-02 e arquitetura do projeto.
+
+### A-20: Objetos do domínio
+
+- **Status:** Decidido.
+- **Problema:** as primeiras classes do domínio misturavam objetos reais com etapas de cálculo, e não tinham uma estrutura de dados clara.
+- **Decisão:** o domínio é formado pelos objetos reais da construção de uma carteira:
+  - `Asset`, identificado pelo ticker, com `PriceSeries` e `AssetClass`;
+  - `Market`, com o calendário, o universo de ativos, market caps, CDI e Ibovespa;
+  - `Portfolio`, com id, nome, pesos, data, estratégia (`Strategy`) e parâmetros usados;
+  - `View`, com as subclasses `AbsoluteView` e `RelativeView`;
+  - `ModelParameters`, com τ, δ e o peso máximo.
+- **Modelo:** o Black-Litterman não é um objeto, porque não tem estado nem identidade. Ele é feito pelas funções `prior`, `posterior` e `optimize`.
+- **Regras:**
+  - os objetos são imutáveis e validados ao serem criados;
+  - o ISIN não entra na primeira versão; tickers antigos são resolvidos antes de criar os objetos;
+  - Σ não é atributo do `Market`, porque é uma estimativa; ela entra nas funções como parâmetro.
+- **Requisitos afetados:** FR-MOD-01 a FR-MOD-13 e RNF-02.
+
+### A-23: Tipos de dados nos cálculos
+
+- **Status:** Decidido.
+- **Problema:** as contas matriciais podem usar `pandas` ou `numpy`. Com `numpy` nas entradas, a ordem dos ativos fica implícita e um erro de ordem passa sem aviso.
+- **Decisão:** atributos e entradas e saídas de funções usam `pd.Series` e `pd.DataFrame`, com tickers ou datas como rótulos. Dentro das funções, a conta é feita em `np.ndarray`, na ordem de `sigma.index`.
+- **Justificativa:** os rótulos garantem a ordem dos ativos, e o `numpy` atende `np.linalg.solve` e o otimizador do `scipy`.
+- **Requisitos afetados:** FR-MOD-06, FR-MOD-08, FR-MOD-10 e T-06.

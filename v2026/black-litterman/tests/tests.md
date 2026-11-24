@@ -12,9 +12,9 @@ Os testes automatizados usam `pytest`, ficam em arquivos `test_*.py` e não aces
 | T-04 | View neutra (`Q = PΠ`) | `μ_BL = Π` | FR-MOD-08 |
 | T-05 | Ω muito grande | `μ_BL` converge para Π | FR-MOD-08 |
 | T-06 | Ativos em outra ordem | Mesmos pesos, reordenados | FR-MOD-06 |
-| T-07 | Views inválidas | Duplicadas ou dependentes geram `InvalidViewError` | FR-MOD-06 |
+| T-07 | Views inválidas | Duplicadas ou dependentes geram `ValueError` | FR-MOD-06 |
 | T-08 | Restrições | Pesos somam 1, `w ≥ 0` e nenhum passa de 20% | FR-MOD-10 |
-| T-09 | Problema inviável | Gera `InfeasibleOptimizationError` | FR-MOD-13 |
+| T-09 | Problema inviável | Gera `ValueError` com mensagem clara | FR-MOD-13 |
 
 ## Dados
 

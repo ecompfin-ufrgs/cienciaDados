@@ -19,11 +19,13 @@ O projeto calcula pesos de carteiras de ações brasileiras com o modelo Black-L
 
 O backend roda no PythonAnywhere, lê o snapshot e expõe uma API. O frontend é separado e começa em Streamlit, podendo mudar.
 
+Na fase inicial, os dados vêm só do yfinance (preços, Ibovespa e market cap atual) e do BCB (CDI). COTAHIST, CVM e brapi entram depois (A-22).
+
 ## Artefatos relacionados
 
 - [Elicitação](elicitacao.md): lista completa de necessidades levantadas.
 - [Análise](analise.md): contradições, decisões e pontos em aberto.
-- [Fluxo de dados do backtest](../project/fluxo_dados_backtest_bl.md): seleção de ativos, coleta e regras do estudo.
+- [Arquitetura](../project/project.md): módulos, objetos do domínio e assinaturas.
 
 ## Pendências
 

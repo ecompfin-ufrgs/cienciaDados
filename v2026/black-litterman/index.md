@@ -20,5 +20,4 @@ Ferramenta acadêmica, sem recomendação de investimento.
 - [Processo de software](proj/engenharia/processo.md)
 - [Requisitos](proj/engenharia/eng_requisitos/eng_requisitos.md)
 - [Arquitetura](proj/engenharia/project/project.md)
-- [Fluxo de dados do backtest](proj/engenharia/project/fluxo_dados_backtest_bl.md)
 - [Testes](tests/tests.md)
